@@ -1,0 +1,5 @@
+<?php
+
+define('CONFIG', [
+  'UPTIMROBOT_API_KEY' => '',
+]);
