@@ -41,7 +41,17 @@ class Util {
     return CONFIG['MONITORS'];
   }
 
-  public static function helpProcess() {
-    var_dump(__METHOD__);
+  public static function printLine($line) {
+    echo implode("\t", $line) . "\n";    
+  }
+  public static function printMonitorStatus($statusId) {
+    $statuses = [
+      '0' => 'paused',
+      '1' => 'not checked yet',
+      '2' => 'up',
+      '8' => 'seems down',
+      '9' => 'down',
+    ];
+    return ($statuses[$statusId] ?? "Unrecognized status id: $statusId");
   }
 }

@@ -5,6 +5,7 @@ namespace Uptimerobot\Command;
 use GetOpt\Command;
 use GetOpt\GetOpt;
 use GetOpt\Operand;
+use \Uptimerobot\Util;
 
 class ListCommand extends Command {
 
@@ -24,8 +25,8 @@ class ListCommand extends Command {
   }
 
   public function handle(GetOpt $getOpt) {
-    $configMonitorIds = \Uptimerobot\Util::getMonitorIds();
-    $configMonitors = \Uptimerobot\Util::getMonitors();
+    $configMonitorIds = Util::getMonitorIds();
+    $configMonitors = Util::getMonitors();
     $uptimerobot = new \Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
 
     $optAll = $getOpt->getOption('a');
@@ -36,6 +37,15 @@ class ListCommand extends Command {
       $response = $uptimerobot->request('getMonitors', ['logs' => 1, 'monitors' => implode('-', $configMonitorIds)]);
     }
     
+    $columnLabels = [
+      'id', 
+      'friendly_name', 
+      'configured',
+      'LINODE_LABEL',
+      'status',
+    ];
+    Util::printLine($columnLabels);
+
     foreach($response['monitors'] as $monitor) {
       $id = $monitor['id'];
       $out = [
@@ -43,8 +53,9 @@ class ListCommand extends Command {
         $monitor['friendly_name'], 
         (in_array($id, $configMonitorIds) ? 'TRUE' : 'FALSE'),
         ($configMonitors[$id]['LINODE_LABEL'] ?? 'NULL'),
+        Util::printMonitorStatus($monitor['status']),
       ];
-      echo implode("\t", $out) . "\n";
+      Util::printLine($out);
     }
   }
 }
