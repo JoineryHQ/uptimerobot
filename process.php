@@ -8,6 +8,7 @@ use GetOpt\ArgumentException;
 use GetOpt\ArgumentException\Missing;
 
 require_once __DIR__ . '/vendor/autoload.php';
+require(__DIR__ . '/config.php');
 
 define('NAME', 'Uptimerobot');
 define('VERSION', '1.0-alpha');
@@ -31,7 +32,10 @@ $getOpt->addCommand(Command::create('test-setup', function () {
 })->setDescription('Check if setup works'));
 
 // add commands
-$getOpt->addCommand(new Uptimerobot\Command\List());
+$getOpt->addCommand(new Uptimerobot\Command\ListCommand());
+
+    $uptimerobot = new Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
+
 //$getOpt->addCommand(new MoveCommand());
 //$getOpt->addCommand(new DeleteCommand());
 
