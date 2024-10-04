@@ -1,0 +1,19 @@
+{
+    "name": "as/uptimerobot",
+    "description": "Joinery toolks for auto-handling of uptimerobot monitors.",
+    "type": "application",
+    "require": {
+        "ulrichsg/getopt-php": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Uptimerobot\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Allen Shaw",
+            "email": "allen@JoineryHQ.com"
+        }
+    ]
+}

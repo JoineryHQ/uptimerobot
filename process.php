@@ -1,62 +1,69 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 
-// require config.php or die with error
-require(__DIR__ . '/config.php');
-require(__DIR__ . '/class/UptimerobotApi.php');
-require(__DIR__ . '/class/Util.php');
-require(__DIR__ . '/class/Argo.php');
+use GetOpt\GetOpt;
+use GetOpt\Option;
+use GetOpt\Command;
+use GetOpt\ArgumentException;
+use GetOpt\ArgumentException\Missing;
 
-//var_dump($argv); 
-//var_dump(getopt('h'));
-//exit;
+require_once __DIR__ . '/vendor/autoload.php';
+
+define('NAME', 'Uptimerobot');
+define('VERSION', '1.0-alpha');
+
+$getOpt = new GetOpt();
+
+// define common options
+$getOpt->addOptions([
+   
+    Option::create(null, 'version', GetOpt::NO_ARGUMENT)
+        ->setDescription('Show version information and quit'),
+        
+    Option::create('?', 'help', GetOpt::NO_ARGUMENT)
+        ->setDescription('Show this help and quit'),
+    
+]);
+
+// add simple commands
+$getOpt->addCommand(Command::create('test-setup', function () { 
+    echo 'When you see this message the setup works.' . PHP_EOL;
+})->setDescription('Check if setup works'));
+
+// add commands
+$getOpt->addCommand(new Uptimerobot\Command\List());
+//$getOpt->addCommand(new MoveCommand());
+//$getOpt->addCommand(new DeleteCommand());
 
 
-$actions = [
-  'process' => [
-    ['h', 'help', '', 'Print help for "process" action', 'Util::helpProcess'],
-  ],
-  'list' => [
-    ['h', 'help', '', 'Print help for "list" action', 'helpList'],    
-  ],
-  NULL => [
-    ['h', 'help', '', 'Print help', 'help'],    
-  ],
-];
-
-$argo = new Argo($actions);
-$action = $argo->getAction();
-
-$callback = $argo->runCallback();
-exit;
-
-
-var_dump($argc);
-var_dump($argv);
-$opts = getopt('abc', ['one::', 'two', 'three']);
-var_dump($opts);
-
-exit;
-
-// validate config
-
-// get all monitors with status '9' (down)
-  // Look for a log with type = '1' (down)
-  // 
-$monitors = implode('-', Util::getMonitorIds());
-
-$uptimerobot = new UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
-//$response = $uptimerobot->request('getMonitors', ['logs' => 1, 'statuses' => '9', 'monitors' => $monitors]);
-$response = $uptimerobot->request('getMonitors');
-
-foreach ($response['monitors'] as $monitor) {
-  echo "monitor: {$monitor['id']} ({$monitor['friendly_name']})\n";
+// process arguments and catch user errors
+try {
+    try {
+        $getOpt->process();
+    } catch (Missing $exception) {
+        // catch missing exceptions if help is requested
+        if (!$getOpt->getOption('help')) {
+            throw $exception;
+        }
+    }
+} catch (ArgumentException $exception) {
+    file_put_contents('php://stderr', $exception->getMessage() . PHP_EOL);
+    echo PHP_EOL . $getOpt->getHelpText();
+    exit;
 }
-exit;
 
-foreach ($response['monitors'] as $monitor) {
-  echo "monitor: {$monitor['id']} ({$monitor['friendly_name']})\n";
-  $downDuration = Util::getDownDuration($monitor);
-  echo "  down duration: ". $downDuration . "\n";
-  
+// show version and quit
+if ($getOpt->getOption('version')) {
+    echo sprintf('%s: %s' . PHP_EOL, NAME, VERSION);
+    exit;
 }
+
+// show help and quit
+$command = $getOpt->getCommand();
+if (!$command || $getOpt->getOption('help')) {
+    echo $getOpt->getHelpText();
+    exit;
+}
+
+// call the requested command
+call_user_func($command->getHandler(), $getOpt);
