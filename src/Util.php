@@ -9,6 +9,14 @@ namespace Uptimerobot;
  */
 class Util {
 
+  const monitorStatuses = [
+    '0' => 'paused',
+    '1' => 'not checked yet',
+    '2' => 'up',
+    '8' => 'seems down',
+    '9' => 'down',
+  ];
+  
   /**
    * For a given monitor, determine the duration of a current 'down' status
    * @param Array $monitor, as returned (with logs) by UptimerobotApi 'getMonitors' method.
@@ -45,13 +53,6 @@ class Util {
     echo implode("\t", $line) . "\n";    
   }
   public static function printMonitorStatus($statusId) {
-    $statuses = [
-      '0' => 'paused',
-      '1' => 'not checked yet',
-      '2' => 'up',
-      '8' => 'seems down',
-      '9' => 'down',
-    ];
-    return ($statuses[$statusId] ?? "Unrecognized status id: $statusId");
+    return (self::monitorStatuses[$statusId] ?? "Unrecognized status id: $statusId");
   }
 }

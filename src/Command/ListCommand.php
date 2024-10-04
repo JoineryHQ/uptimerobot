@@ -22,6 +22,14 @@ class ListCommand extends Command {
     $optAll = new \GetOpt\Option('a', 'all', \GetOpt\GetOpt::NO_ARGUMENT);
     $optAll->setDescription('List all existing monitors (not just those in config)');
     $this->addOption($optAll);
+    
+    $optAll = new \GetOpt\Option('s', 'status', \GetOpt\GetOpt::REQUIRED_ARGUMENT);
+    $monitorStatuses = [];
+    foreach (Util::monitorStatuses as $statusId => $statusLabel) {
+      $monitorStatuses[] = "$statusId: $statusLabel";
+    }
+    $optAll->setDescription('Limit list to monitors with a given status (integer): ' . implode('; ', $monitorStatuses));
+    $this->addOption($optAll);
   }
 
   public function handle(GetOpt $getOpt) {
@@ -29,12 +37,17 @@ class ListCommand extends Command {
     $configMonitors = Util::getMonitors();
     $uptimerobot = new \Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
 
+    
+    $optStatus = $getOpt->getOption('s');
+    if ($optStatus) {
+      $statuses = $optStatus;
+    }
     $optAll = $getOpt->getOption('a');
     if ($optAll) {
-      $response = $uptimerobot->request('getMonitors');
+      $response = $uptimerobot->request('getMonitors', ['statuses' => $statuses]);
     }
     else {
-      $response = $uptimerobot->request('getMonitors', ['logs' => 1, 'monitors' => implode('-', $configMonitorIds)]);
+      $response = $uptimerobot->request('getMonitors', ['logs' => 1, 'monitors' => implode('-', $configMonitorIds), 'statuses' => $statuses]);
     }
     
     $columnLabels = [
