@@ -23,13 +23,17 @@ class ListCommand extends Command {
     $optAll->setDescription('List all existing monitors (not just those in config)');
     $this->addOption($optAll);
     
-    $optAll = new \GetOpt\Option('s', 'status', \GetOpt\GetOpt::REQUIRED_ARGUMENT);
+    $optStatus = new \GetOpt\Option('s', 'status', \GetOpt\GetOpt::REQUIRED_ARGUMENT);
     $monitorStatuses = [];
     foreach (Util::monitorStatuses as $statusId => $statusLabel) {
       $monitorStatuses[] = "$statusId: $statusLabel";
     }
-    $optAll->setDescription('Limit list to monitors with a given status (integer): ' . implode('; ', $monitorStatuses));
-    $this->addOption($optAll);
+    $monitorStatusesHelp = implode('; ', $monitorStatuses);
+    $optStatus->setDescription('INTEGER: Limit list to monitors with a given status: ' . $monitorStatusesHelp);
+    $optStatus->setValidation(function ($value) {
+        return (array_key_exists($value, Util::monitorStatuses));
+    }, 'Status must be a valid status integer, one of: '. $monitorStatusesHelp);
+    $this->addOption($optStatus);
   }
 
   public function handle(GetOpt $getOpt) {
