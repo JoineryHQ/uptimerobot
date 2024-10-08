@@ -34,7 +34,7 @@ $getOpt->addCommand(Command::create('test-setup', function () {
 // add commands
 $getOpt->addCommand(new Uptimerobot\Command\ListCommand());
 
-    $uptimerobot = new Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
+//    $uptimerobot = new Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
 
 //$getOpt->addCommand(new MoveCommand());
 //$getOpt->addCommand(new DeleteCommand());

@@ -43,9 +43,7 @@ class ListCommand extends Command {
 
     
     $optStatus = $getOpt->getOption('s');
-    if ($optStatus) {
-      $statuses = $optStatus;
-    }
+    $statuses = $optStatus ?? NULL;
     $optAll = $getOpt->getOption('a');
     if ($optAll) {
       $response = $uptimerobot->request('getMonitors', ['statuses' => $statuses]);
