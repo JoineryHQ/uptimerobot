@@ -33,11 +33,8 @@ $getOpt->addCommand(Command::create('test-setup', function () {
 
 // add commands
 $getOpt->addCommand(new Uptimerobot\Command\ListCommand());
+$getOpt->addCommand(new Uptimerobot\Command\ProcessCommand());
 
-//    $uptimerobot = new Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
-
-//$getOpt->addCommand(new MoveCommand());
-//$getOpt->addCommand(new DeleteCommand());
 
 
 // process arguments and catch user errors
