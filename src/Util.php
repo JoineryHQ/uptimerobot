@@ -50,7 +50,7 @@ class Util {
   }
 
   public static function printLine($line) {
-    echo implode("\t", $line) . "\n";    
+    echo implode("\t", $line) . PHP_EOL;
   }
   public static function printMonitorStatus($statusId) {
     return (self::monitorStatuses[$statusId] ?? "Unrecognized status id: $statusId");
