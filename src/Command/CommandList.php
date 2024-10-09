@@ -7,7 +7,7 @@ use GetOpt\GetOpt;
 use GetOpt\Operand;
 use \Uptimerobot\Util;
 
-class ListCommand extends Command {
+class CommandList extends Command {
 
   public function __construct() {
     parent::__construct('list', [$this, 'handle']);

@@ -7,7 +7,7 @@ use GetOpt\GetOpt;
 use GetOpt\Operand;
 use \Uptimerobot\Util;
 
-class ProcessCommand extends Command {
+class CommandProcess extends Command {
 
   public function __construct() {
     parent::__construct('process', [$this, 'handle']);

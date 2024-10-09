@@ -32,8 +32,8 @@ $getOpt->addCommand(Command::create('test-setup', function () {
 })->setDescription('Check if setup works'));
 
 // add commands
-$getOpt->addCommand(new Uptimerobot\Command\ListCommand());
-$getOpt->addCommand(new Uptimerobot\Command\ProcessCommand());
+$getOpt->addCommand(new Uptimerobot\Command\CommandList());
+$getOpt->addCommand(new Uptimerobot\Command\CommandProcess());
 
 
 
