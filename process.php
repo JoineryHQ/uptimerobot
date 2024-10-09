@@ -26,12 +26,8 @@ $getOpt->addOptions([
     
 ]);
 
-// add simple commands
-$getOpt->addCommand(Command::create('test-setup', function () { 
-    echo 'When you see this message the setup works.' . PHP_EOL;
-})->setDescription('Check if setup works'));
-
 // add commands
+$getOpt->addCommand(new Uptimerobot\Command\CommandTest());
 $getOpt->addCommand(new Uptimerobot\Command\CommandList());
 $getOpt->addCommand(new Uptimerobot\Command\CommandProcess());
 
