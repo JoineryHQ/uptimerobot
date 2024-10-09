@@ -40,7 +40,7 @@ class CommandProcess extends Command {
   public function handle(GetOpt $getOpt) {
     $configMonitorIds = Util::getMonitorIds();
     $configMonitors = Util::getMonitors();
-    $uptimerobot = new \Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
+    $uptimerobot = \Uptimerobot\UptimerobotApi::singleton();
 
     $response = $uptimerobot->request('getMonitors', ['logs' => 1, 'monitors' => implode('-', $configMonitorIds)]);
 

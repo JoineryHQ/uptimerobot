@@ -10,6 +10,8 @@ class UptimerobotApi {
 
   private $apiKey;
 
+  private static $_singleton;
+
   public $debug;
 
   /**
@@ -20,11 +22,26 @@ class UptimerobotApi {
    *
    * @throws \Exception Configuration is missing
    */
-  public function __construct($apiKey) {
+  private function __construct() {
+    $apiKey = CONFIG['UPTIMROBOT_API']['KEY'];
     if (empty($apiKey)) {
       throw new \Exception('Missing API Key');
     }
     $this->apiKey = $apiKey;
+  }
+
+  /**
+   * Singleton pattern.
+   *
+   * @see __construct()
+   *
+   * @return object This
+   */
+  public static function singleton() {
+    if (self::$_singleton === NULL) {
+      self::$_singleton = new UptimerobotApi();
+    }
+    return self::$_singleton;
   }
 
   /**

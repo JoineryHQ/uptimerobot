@@ -39,7 +39,7 @@ class CommandList extends Command {
   public function handle(GetOpt $getOpt) {
     $configMonitorIds = Util::getMonitorIds();
     $configMonitors = Util::getMonitors();
-    $uptimerobot = new \Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
+    $uptimerobot = \Uptimerobot\UptimerobotApi::singleton();
 
     
     $optStatus = $getOpt->getOption('s');

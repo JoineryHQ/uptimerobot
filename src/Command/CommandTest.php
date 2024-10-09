@@ -57,7 +57,7 @@ class CommandTest extends Command {
   private function testApiKey() {
     $ret = FALSE;
     if (!empty(CONFIG['UPTIMROBOT_API']['KEY'])) {
-      $uptimerobot = new \Uptimerobot\UptimerobotApi(CONFIG['UPTIMROBOT_API']['KEY']);
+      $uptimerobot = \Uptimerobot\UptimerobotApi::singleton();
       try {
         $response = $uptimerobot->request('getMonitors', ['monitors' => '']);
         if($response['stat'] == 'ok') {
