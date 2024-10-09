@@ -62,4 +62,36 @@ class Util {
   public static function getMonitorStatusIdLabel($statusId) {
     return (self::monitorStatuses[$statusId] ?? "Unrecognized status id: $statusId");
   }
+
+  public static function sendNotificationEmail($monitor, $statusLabel) {
+    $subject = "MONITOR STATUS: \"$statusLabel\" '{$monitor['friendly_name']}'";
+
+    $body = "<html>"  . PHP_EOL;
+    $body .= "The following monitor is reporting status '$statusLabel':"  . PHP_EOL;
+    $body .= '<pre>';
+    $body .= var_export(CONFIG['MONITORS'][$monitor['id']], TRUE) . PHP_EOL;
+    $body .= var_export($monitor, TRUE) . PHP_EOL;
+
+    $bodyFilePath = tempnam(sys_get_temp_dir(), 'UptimeRobotNotification');
+    $fp = fopen($bodyFilePath, 'w');
+    fwrite($fp, $body);
+    fclose($fp);
+
+    $shellArgs = [
+      'u' => escapeshellarg($subject),
+      't' => escapeshellarg(CONFIG['NOTIFY']['EMAIL_TO']),
+      'f' => escapeshellarg(CONFIG['NOTIFY']['EMAIL_FROM']),
+      's' => escapeshellarg(CONFIG['NOTIFY']['SMTP_SERVER']),
+      'xu' => escapeshellarg(CONFIG['NOTIFY']['SMTP_USERNAME']),
+      'xp' => escapeshellarg(CONFIG['NOTIFY']['SMTP_PASSWORD']),
+      'o' => escapeshellarg("message-file=$bodyFilePath"),
+    ];
+    $argString = '';
+    foreach ($shellArgs as $argName => $argValue) {
+      $argString .= " -{$argName} $argValue";
+    }
+    $cmd = "sendemail $argString";
+    shell_exec($cmd);
+    unlink($bodyFilePath);
+  }
 }

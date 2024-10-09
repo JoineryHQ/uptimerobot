@@ -44,19 +44,10 @@ class CommandProcess extends Command {
 
     $response = $uptimerobot->request('getMonitors', ['logs' => 1, 'monitors' => implode('-', $configMonitorIds)]);
 
-    
     foreach($response['monitors'] as $monitor) {
-      if (Util::getMonitorStatusIdLabel($monitor['status']) == 'down') {
-        $id = $monitor['id'];
-        $out = [
-          "WOULD ACT ON DOWN MONITOR:",
-          $id, 
-          $monitor['friendly_name'], 
-          (in_array($id, $configMonitorIds) ? 'TRUE' : 'FALSE'),
-          ($configMonitors[$id]['LINODE_LABEL'] ?? 'NULL'),
-          Util::getMonitorStatusIdLabel($monitor['status']),
-        ];
-        Util::printLine($out);
+      $statusLabel = Util::getMonitorStatusIdLabel($monitor['status']);
+      if ($statusLabel == 'down') {
+        Util::sendNotificationEmail($monitor, $statusLabel);
       }
     }
   }
