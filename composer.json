@@ -1,19 +1,33 @@
 {
-    "name": "as/uptimerobot",
-    "description": "Joinery toolks for auto-handling of uptimerobot monitors.",
-    "type": "application",
-    "require": {
-        "ulrichsg/getopt-php": "^4.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Uptimerobot\\": "src/"
+  "name": "as/uptimerobot",
+  "description": "Joinery toolks for auto-handling of uptimerobot monitors.",
+  "type": "application",
+  "require": {
+    "ulrichsg/getopt-php": "^4.0",
+    "mogaal/sendemail": "1.56.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Uptimerobot\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Allen Shaw",
+      "email": "allen@JoineryHQ.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "mogaal/sendemail",
+        "version": "1.56.0",
+        "dist": {
+          "url": "https://github.com/mogaal/sendemail/archive/refs/heads/master.zip",
+          "type": "zip"
         }
-    },
-    "authors": [
-        {
-            "name": "Allen Shaw",
-            "email": "allen@JoineryHQ.com"
-        }
-    ]
+      }
+    }    
+  ]    
 }
