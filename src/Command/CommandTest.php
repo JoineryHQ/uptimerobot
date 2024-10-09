@@ -22,35 +22,35 @@ class CommandTest extends Command {
     Util::printLine(['Testing configuration ...']);
     $tests = [];
     $tests['System has "sendemail" executable installed?'] = is_executable(trim(shell_exec("command -v sendemail")));
-    $tests['NOTIFY:EMAIL_TO is configured and has good syntax'] = (
+    $tests['NOTIFY:EMAIL_TO is configured and has good syntax?'] = (
       !empty(CONFIG['NOTIFY']['EMAIL_TO'])
       && filter_var(CONFIG['NOTIFY']['EMAIL_TO'], FILTER_VALIDATE_EMAIL)
     );
-    $tests['NOTIFY:EMAIL_FROM is configured and has good syntax'] = (
+    $tests['NOTIFY:EMAIL_FROM is configured and has good syntax?'] = (
       !empty(CONFIG['NOTIFY']['EMAIL_FROM'])
       && filter_var(CONFIG['NOTIFY']['EMAIL_FROM'], FILTER_VALIDATE_EMAIL)
     );
-    $tests['NOTIFY:SMTP_SERVER is configured and has good syntax'] = (
+    $tests['NOTIFY:SMTP_SERVER is configured and has good syntax?'] = (
       !empty(CONFIG['NOTIFY']['SMTP_SERVER'])
       && filter_var('smtp://' . CONFIG['NOTIFY']['SMTP_SERVER'], FILTER_VALIDATE_URL)
     );
-    $tests['NOTIFY:SMTP_USERNAME is configured'] = (
+    $tests['NOTIFY:SMTP_USERNAME is configured?'] = (
       !empty(CONFIG['NOTIFY']['SMTP_USERNAME'])
       && is_string(CONFIG['NOTIFY']['SMTP_USERNAME'])
     );
-    $tests['NOTIFY:SMTP_PASSWORD is configured'] = (
+    $tests['NOTIFY:SMTP_PASSWORD is configured?'] = (
       !empty(CONFIG['NOTIFY']['SMTP_PASSWORD'])
       && is_string(CONFIG['NOTIFY']['SMTP_PASSWORD'])
     );
-    $tests['MAX_REBOOT_PER_DOWNTIME is configured and has good syntax'] = (
+    $tests['MAX_REBOOT_PER_DOWNTIME is configured and has good syntax?'] = (
       !empty(CONFIG['DEFAULTS']['MAX_REBOOT_PER_DOWNTIME'])
       && filter_var(CONFIG['DEFAULTS']['MAX_REBOOT_PER_DOWNTIME'], FILTER_VALIDATE_INT)
     );
-    $tests['MIN_REBOOT_INTERVAL is configured and has good syntax'] = (
+    $tests['MIN_REBOOT_INTERVAL is configured and has good syntax?'] = (
       !empty(CONFIG['DEFAULTS']['MIN_REBOOT_INTERVAL'])
       && filter_var(CONFIG['DEFAULTS']['MIN_REBOOT_INTERVAL'], FILTER_VALIDATE_INT)
     );    
-    $tests['UPTIMROBOT_API:KEY is configured and valid'] = $this->testApiKey();    
+    $tests['UPTIMROBOT_API:KEY is configured and valid?'] = $this->testApiKey();
     
     foreach ($tests as $description => $status) {
       $line = [($status ? 'PASS' : 'FAIL') . ':', $description];
