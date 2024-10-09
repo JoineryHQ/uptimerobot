@@ -4,17 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59e7b8f4bd2531ffc1bc34d48557a263",
+    "content-hash": "eb8f62fe516a97f023180ba2b84b6c20",
     "packages": [
-        {
-            "name": "mogaal/sendemail",
-            "version": "1.56.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/mogaal/sendemail/archive/refs/heads/master.zip"
-            },
-            "type": "library"
-        },
         {
             "name": "ulrichsg/getopt-php",
             "version": "v4.0.3",
