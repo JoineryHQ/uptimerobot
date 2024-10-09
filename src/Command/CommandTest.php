@@ -19,8 +19,8 @@ class CommandTest extends Command {
   }
 
   public function handle(GetOpt $getOpt) {
+    Util::printLine(['Testing configuration ...']);
     $tests = [];
-
     $tests['System has "sendemail" executable installed?'] = is_executable(trim(shell_exec("command -v sendemail")));
     $tests['NOTIFY_EMAIL is configured and has good syntax'] = (
       !empty(CONFIG['DEFAULTS']['NOTIFY_EMAIL'])
@@ -47,8 +47,25 @@ class CommandTest extends Command {
       Util::printLine(['All tests passed.']);
     }
 
-    if($getOpt->getOption('m')) {
-      
+    $badMonitorIds = [];
+    if($getOpt->getOption('m') && is_array(CONFIG['MONITORS'])) {
+      Util::printLine(['Testing configured monitors ...']);
+      $uptimerobot = \Uptimerobot\UptimerobotApi::singleton();
+      foreach (CONFIG['MONITORS'] as $monitorId => $monitor) {
+        $response = $uptimerobot->request('getMonitors', ['monitors' => $monitorId]);
+        if (count($response['monitors']) != 1) {
+          $badMonitorIds[] = $monitorId;
+        }
+      }
+    }
+    if (!empty($badMonitorIds)) {
+      foreach ($badMonitorIds as $badMonitorId) {
+        Util::printLine(['Not found in UptimeRobot: Configured monitor ID:', $badMonitorId]);
+      }
+      Util::printLine(['!!! MISCONFIGURED MONITORS FOUND !!! See above.']);
+    }
+    else {
+      Util::printLine(['All configured monitors found in UptimeRobot.']);
     }
 
     return;
