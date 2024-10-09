@@ -1,5 +1,25 @@
 <?php
 
 define('CONFIG', [
-  'UPTIMROBOT_API_KEY' => '',
+  'NOTIFY' => [
+    'EMAIL_TO' => '',
+    'EMAIL_FROM' => '',
+    'SMTP_SERVER' => '',
+    'SMTP_USERNAME' => '',
+    'SMTP_PASSWORD' => '',
+   ],
+  'DEFAULTS' => [
+    'MAX_REBOOT_PER_DOWNTIME' => '',
+    'MIN_REBOOT_INTERVAL' => '',
+  ],
+  'UPTIMROBOT_API' => [
+    // API key to read from uptimerobot monitors.
+    'KEY' => '',
+  ],
+  // UptimeRobot monitors to monitor.
+  // [Uptimerobot_monitor_id] => [
+  //    'LINODE_LABEL' => [label of linode where monitored site is hosted]
+  // ]
+  'MONITORS' => [
+  ],
 ]);
