@@ -22,9 +22,25 @@ class CommandTest extends Command {
     Util::printLine(['Testing configuration ...']);
     $tests = [];
     $tests['System has "sendemail" executable installed?'] = is_executable(trim(shell_exec("command -v sendemail")));
-    $tests['NOTIFY_EMAIL is configured and has good syntax'] = (
-      !empty(CONFIG['DEFAULTS']['NOTIFY_EMAIL'])
-      && filter_var(CONFIG['DEFAULTS']['NOTIFY_EMAIL'], FILTER_VALIDATE_EMAIL)
+    $tests['NOTIFY:EMAIL_TO is configured and has good syntax'] = (
+      !empty(CONFIG['NOTIFY']['EMAIL_TO'])
+      && filter_var(CONFIG['NOTIFY']['EMAIL_TO'], FILTER_VALIDATE_EMAIL)
+    );
+    $tests['NOTIFY:EMAIL_FROM is configured and has good syntax'] = (
+      !empty(CONFIG['NOTIFY']['EMAIL_FROM'])
+      && filter_var(CONFIG['NOTIFY']['EMAIL_FROM'], FILTER_VALIDATE_EMAIL)
+    );
+    $tests['NOTIFY:SMTP_SERVER is configured and has good syntax'] = (
+      !empty(CONFIG['NOTIFY']['SMTP_SERVER'])
+      && filter_var('smtp://' . CONFIG['NOTIFY']['SMTP_SERVER'], FILTER_VALIDATE_URL)
+    );
+    $tests['NOTIFY:SMTP_USERNAME is configured'] = (
+      !empty(CONFIG['NOTIFY']['SMTP_USERNAME'])
+      && is_string(CONFIG['NOTIFY']['SMTP_USERNAME'])
+    );
+    $tests['NOTIFY:SMTP_PASSWORD is configured'] = (
+      !empty(CONFIG['NOTIFY']['SMTP_PASSWORD'])
+      && is_string(CONFIG['NOTIFY']['SMTP_PASSWORD'])
     );
     $tests['MAX_REBOOT_PER_DOWNTIME is configured and has good syntax'] = (
       !empty(CONFIG['DEFAULTS']['MAX_REBOOT_PER_DOWNTIME'])
@@ -57,15 +73,15 @@ class CommandTest extends Command {
           $badMonitorIds[] = $monitorId;
         }
       }
-    }
-    if (!empty($badMonitorIds)) {
-      foreach ($badMonitorIds as $badMonitorId) {
-        Util::printLine(['Not found in UptimeRobot: Configured monitor ID:', $badMonitorId]);
+      if (!empty($badMonitorIds)) {
+        foreach ($badMonitorIds as $badMonitorId) {
+          Util::printLine(['Not found in UptimeRobot: Configured monitor ID:', $badMonitorId]);
+        }
+        Util::printLine(['!!! MISCONFIGURED MONITORS FOUND !!! See above.']);
       }
-      Util::printLine(['!!! MISCONFIGURED MONITORS FOUND !!! See above.']);
-    }
-    else {
-      Util::printLine(['All configured monitors found in UptimeRobot.']);
+      else {
+        Util::printLine(['All configured monitors found in UptimeRobot.']);
+      }
     }
 
     return;
