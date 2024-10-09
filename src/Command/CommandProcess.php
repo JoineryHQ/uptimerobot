@@ -46,7 +46,7 @@ class CommandProcess extends Command {
 
     
     foreach($response['monitors'] as $monitor) {
-      if (Util::printMonitorStatus($monitor['status']) == 'down') {
+      if (Util::getMonitorStatusIdLabel($monitor['status']) == 'down') {
         $id = $monitor['id'];
         $out = [
           "WOULD ACT ON DOWN MONITOR:",
@@ -54,7 +54,7 @@ class CommandProcess extends Command {
           $monitor['friendly_name'], 
           (in_array($id, $configMonitorIds) ? 'TRUE' : 'FALSE'),
           ($configMonitors[$id]['LINODE_LABEL'] ?? 'NULL'),
-          Util::printMonitorStatus($monitor['status']),
+          Util::getMonitorStatusIdLabel($monitor['status']),
         ];
         Util::printLine($out);
       }

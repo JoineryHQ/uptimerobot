@@ -49,10 +49,16 @@ class Util {
     return CONFIG['MONITORS'];
   }
 
-  public static function printLine($line) {
-    echo implode("\t", $line) . PHP_EOL;
+  /**
+   * Print a given array as a tab-delimited line.
+   *
+   * @param Array $line The contents of the line.
+   * @param Resource $ioStream The io stream resource to print to (STDERR or STDOUT)
+   */
+  public static function printLine($line, $ioStream = STDERR) {
+    fwrite($ioStream, implode("\t", $line) . PHP_EOL);
   }
-  public static function printMonitorStatus($statusId) {
+  public static function getMonitorStatusIdLabel($statusId) {
     return (self::monitorStatuses[$statusId] ?? "Unrecognized status id: $statusId");
   }
 }

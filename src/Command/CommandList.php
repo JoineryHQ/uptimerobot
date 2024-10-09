@@ -68,7 +68,7 @@ class CommandList extends Command {
         $monitor['friendly_name'], 
         (in_array($id, $configMonitorIds) ? 'TRUE' : 'FALSE'),
         ($configMonitors[$id]['LINODE_LABEL'] ?? 'NULL'),
-        Util::printMonitorStatus($monitor['status']),
+        Util::getMonitorStatusIdLabel($monitor['status']),
       ];
       Util::printLine($out);
     }
