@@ -55,9 +55,10 @@ class Util {
    * @param Array $line The contents of the line.
    * @param Resource $ioStream The io stream resource to print to (STDERR or STDOUT)
    */
-  public static function printLine($line, $ioStream = STDERR) {
+  public static function printLine($line, $ioStream = STDOUT) {
     fwrite($ioStream, implode("\t", $line) . PHP_EOL);
   }
+
   public static function getMonitorStatusIdLabel($statusId) {
     return (self::monitorStatuses[$statusId] ?? "Unrecognized status id: $statusId");
   }
