@@ -10,7 +10,7 @@ define('CONFIG', [
    ],
   'DEFAULTS' => [
     'MAX_REBOOT_PER_DOWNTIME' => '',
-    'MIN_REBOOT_INTERVAL' => '',
+    'MIN_REBOOT_INTERVAL_SECONDS' => '',
   ],
   'UPTIMROBOT_API' => [
     // API key to read from uptimerobot monitors.

@@ -46,9 +46,9 @@ class CommandTest extends Command {
       !empty(CONFIG['DEFAULTS']['MAX_REBOOT_PER_DOWNTIME'])
       && filter_var(CONFIG['DEFAULTS']['MAX_REBOOT_PER_DOWNTIME'], FILTER_VALIDATE_INT)
     );
-    $tests['MIN_REBOOT_INTERVAL is configured and has good syntax?'] = (
-      !empty(CONFIG['DEFAULTS']['MIN_REBOOT_INTERVAL'])
-      && filter_var(CONFIG['DEFAULTS']['MIN_REBOOT_INTERVAL'], FILTER_VALIDATE_INT)
+    $tests['MIN_REBOOT_INTERVAL_SECONDS is configured and has good syntax?'] = (
+      !empty(CONFIG['DEFAULTS']['MIN_REBOOT_INTERVAL_SECONDS'])
+      && filter_var(CONFIG['DEFAULTS']['MIN_REBOOT_INTERVAL_SECONDS'], FILTER_VALIDATE_INT)
     );    
     $tests['UPTIMROBOT_API:KEY is configured and valid?'] = $this->testApiKey();
     
